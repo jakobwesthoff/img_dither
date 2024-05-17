@@ -34,7 +34,7 @@ struct QuantizationError {
     b: f32,
 }
 
-fn map_to_palette(orig: Color, palette: &Vec<Color>) -> (&Color, QuantizationError) {
+fn map_to_palette(orig: Color, palette: &[Color]) -> (&Color, QuantizationError) {
     let mut min_distance = f32::INFINITY;
     let mut color = &palette[0];
 
@@ -82,7 +82,7 @@ fn main() -> Result<()> {
     let mut buffer = image.into_raw();
 
     // https://www.androidarts.com/palette/16pal.htm
-    let palette: Vec<Color> = vec![
+    let palette = [
         Color::from(0x000000),
         Color::from(0x9D9D9D),
         Color::from(0xFFFFFF),
@@ -101,7 +101,7 @@ fn main() -> Result<()> {
         Color::from(0xB2DCEF),
     ];
 
-    let floyd_steinberg: Vec<f32> = vec![0.0, 0.0, 7.0 / 16.0, 3.0 / 16.0, 5.0 / 16.0, 1.0 / 16.0];
+    let floyd_steinberg = [0.0, 0.0, 7.0 / 16.0, 3.0 / 16.0, 5.0 / 16.0, 1.0 / 16.0];
 
     for cy in 0..height {
         for cx in 0..width {
@@ -120,7 +120,7 @@ fn main() -> Result<()> {
                     }
 
                     let i = ((y * width + x as u32) * 3) as usize;
-                    let di = ((dy * 3) + (1 as isize + dx) as u32) as usize;
+                    let di = ((dy * 3) + (1_isize + dx) as u32) as usize;
 
                     buffer[i] = (buffer[i] as f32 + qe.r * floyd_steinberg[di])
                         .round()
