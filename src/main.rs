@@ -1,33 +1,10 @@
+mod color;
+
+use color::Color;
+
 use anyhow::{Context, Result};
 use image::ExtendedColorType;
 use std::env;
-
-#[derive(Clone, Copy)]
-struct Color {
-    r: u8,
-    g: u8,
-    b: u8,
-}
-
-impl From<u32> for Color {
-    fn from(v: u32) -> Self {
-        Color {
-            b: (v & 0xff) as u8,
-            g: (v >> 8 & 0xff) as u8,
-            r: (v >> 16 & 0xff) as u8,
-        }
-    }
-}
-
-impl From<&[u8]> for Color {
-    fn from(v: &[u8]) -> Self {
-        Color {
-            r: v[0],
-            g: v[1],
-            b: v[2],
-        }
-    }
-}
 
 struct QuantizationError {
     r: f32,
@@ -72,7 +49,7 @@ struct DitheringKernel {
 }
 
 fn dither(image: &Image, kernel: &DitheringKernel, palette: &[Color]) -> Image {
-    let mut dithered = vec![Color::from(0u32); image.width * image.height];
+    let mut dithered = vec![Color::from(0xff); image.width * image.height];
     dithered.clone_from_slice(image.data.as_ref());
 
     for cy in 0..image.height {
@@ -123,7 +100,7 @@ fn load_image_from_file(input: &str) -> Result<Image> {
         .into_rgb8();
     let (width, height) = image.dimensions();
     let buffer = image.into_raw();
-    let mut data = vec![Color::from(0u32); width as usize * height as usize];
+    let mut data = vec![Color::from(0xff); width as usize * height as usize];
     for i in 0..buffer.len() / 3 {
         data[i].r = buffer[i * 3];
         data[i].g = buffer[i * 3 + 1];
@@ -175,22 +152,22 @@ fn main() -> Result<()> {
 
     // https://www.androidarts.com/palette/16pal.htm
     let palette = [
-        Color::from(0x000000),
-        Color::from(0x9D9D9D),
-        Color::from(0xFFFFFF),
-        Color::from(0xBE2633),
-        Color::from(0xE06F8B),
-        Color::from(0x493C2B),
-        Color::from(0xA46422),
-        Color::from(0xEB8931),
-        Color::from(0xF7E26B),
-        Color::from(0x2F484E),
-        Color::from(0x44891A),
-        Color::from(0xA3CE27),
-        Color::from(0x1B2632),
-        Color::from(0x005784),
-        Color::from(0x31A2F2),
-        Color::from(0xB2DCEF),
+        Color::from(0x000000FF),
+        Color::from(0x9D9D9DFF),
+        Color::from(0xFFFFFFFF),
+        Color::from(0xBE2633FF),
+        Color::from(0xE06F8BFF),
+        Color::from(0x493C2BFF),
+        Color::from(0xA46422FF),
+        Color::from(0xEB8931FF),
+        Color::from(0xF7E26BFF),
+        Color::from(0x2F484EFF),
+        Color::from(0x44891AFF),
+        Color::from(0xA3CE27FF),
+        Color::from(0x1B2632FF),
+        Color::from(0x005784FF),
+        Color::from(0x31A2F2FF),
+        Color::from(0xB2DCEFFF),
     ];
 
     let floyd_steinberg = DitheringKernel {
