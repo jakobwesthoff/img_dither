@@ -1,3 +1,4 @@
+workspace = { members = ["rust_stb_image_write"] }
 [package]
 name = "img_dither"
 version = "0.1.0"
@@ -7,5 +8,5 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.82"
-image = "0.25.1"
+rust_stb_image_write = { version = "0.1.0", path = "rust_stb_image_write" }
 stb_image = "0.3.0"

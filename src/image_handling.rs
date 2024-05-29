@@ -1,5 +1,5 @@
 use anyhow::{anyhow, Context, Result};
-use image::ExtendedColorType;
+use rust_stb_image_write::stbi_write_png_to_file;
 use std::fs::File;
 use std::io::{BufReader, Read};
 
@@ -61,14 +61,9 @@ pub fn save_image_to_file(image: &Image, output: &str) -> Result<()> {
         buffer[i * 3 + 2] = image.data[i].b;
     }
 
-    image::save_buffer(
-        output,
-        &buffer,
-        image.width as u32,
-        image.height as u32,
-        ExtendedColorType::Rgb8,
-    )
-    .context("save image to {output}")?;
-
-    Ok(())
+    if stbi_write_png_to_file(output, image.width, image.height, &buffer) {
+        Ok(())
+    } else {
+        Err(anyhow!("Error creating png file {output}"))
+    }
 }
