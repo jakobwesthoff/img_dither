@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.82"
 image = "0.25.1"
+stb_image = "0.3.0"
