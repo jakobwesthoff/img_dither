@@ -24,6 +24,8 @@ impl ColorAsByteSlice for [Color] {
 }
 
 impl Color {
+    pub const BLACK: Self = Self::from_u32_rgba(0x00000000);
+
     pub fn from_bytes(bytes: &[u8]) -> &[Self] {
         if bytes.len() % std::mem::size_of::<Color>() != 0 {
             panic!("Color slices can only be initialized with a multiple of 4 byte slices");
@@ -106,10 +108,8 @@ impl Color {
         // But we want the hue in [0,360], s in [0,100] and l in [0,100]
         HslColor::new(h * 360f64, s * 100f64, l * 100f64)
     }
-}
 
-impl From<u32> for Color {
-    fn from(v: u32) -> Self {
+    pub const fn from_u32_rgba(v: u32) -> Self {
         Self {
             r: ((v >> 32 - 8) & 0xff) as u8,
             g: ((v >> 32 - 16) & 0xff) as u8,

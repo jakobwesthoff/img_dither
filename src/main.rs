@@ -4,10 +4,9 @@ mod image_handling;
 mod resizing;
 
 use image_handling::*;
-use resizing::resize_lanczos;
+// use resizing::resize_lanczos;
 
-use color::Color;
-use dithering::{dither_image, DitheringKernel};
+use dithering::{dither_image, DitheringKernel, PALETTE16};
 
 use anyhow::{Context, Result};
 use std::env;
@@ -29,35 +28,14 @@ fn main() -> Result<()> {
 
     let image = load_image_from_file(input).with_context(|| format!("loading image {input}"))?;
 
-    // https://www.androidarts.com/palette/16pal.htm
-    let palette = [
-        Color::from(0x000000FF),
-        Color::from(0x9D9D9DFF),
-        Color::from(0xFFFFFFFF),
-        Color::from(0xBE2633FF),
-        Color::from(0xE06F8BFF),
-        Color::from(0x493C2BFF),
-        Color::from(0xA46422FF),
-        Color::from(0xEB8931FF),
-        Color::from(0xF7E26BFF),
-        Color::from(0x2F484EFF),
-        Color::from(0x44891AFF),
-        Color::from(0xA3CE27FF),
-        Color::from(0x1B2632FF),
-        Color::from(0x005784FF),
-        Color::from(0x31A2F2FF),
-        Color::from(0xB2DCEFFF),
-    ];
-
     // let smaller = resize_lanczos(&image, image.width / 8, image.height / 8, 3f64)?;
     // let bigger = resize_lanczos(&smaller, smaller.width * 8, smaller.height * 8, 3f64)?;
 
     // save_image_to_file(&smaller, "./smaller.png")?;
     // save_image_to_file(&bigger, "./bigger.png")?;
 
-    let dithered = dither_image(&image, &DitheringKernel::floyd_steinberg(), &palette);
+    let dithered = dither_image(&image, &DitheringKernel::floyd_steinberg(), &PALETTE16);
     save_image_to_file(&dithered, output).with_context(|| format!("saving image to {output}"))?;
-
 
     Ok(())
 }

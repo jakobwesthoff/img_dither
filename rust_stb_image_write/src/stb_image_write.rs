@@ -47,6 +47,7 @@ extern "C" {
         quality: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
+#[allow(non_camel_case_types)]
 pub type stbi_write_func = ::std::option::Option<
     unsafe extern "C" fn(
         context: *mut ::std::os::raw::c_void,

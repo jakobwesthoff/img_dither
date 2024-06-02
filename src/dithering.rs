@@ -22,6 +22,26 @@ impl DitheringKernel {
     }
 }
 
+// https://www.androidarts.com/palette/16pal.htm
+pub const PALETTE16: [Color; 16] = [
+    Color::from_u32_rgba(0x000000FF),
+    Color::from_u32_rgba(0x9D9D9DFF),
+    Color::from_u32_rgba(0xFFFFFFFF),
+    Color::from_u32_rgba(0xBE2633FF),
+    Color::from_u32_rgba(0xE06F8BFF),
+    Color::from_u32_rgba(0x493C2BFF),
+    Color::from_u32_rgba(0xA46422FF),
+    Color::from_u32_rgba(0xEB8931FF),
+    Color::from_u32_rgba(0xF7E26BFF),
+    Color::from_u32_rgba(0x2F484EFF),
+    Color::from_u32_rgba(0x44891AFF),
+    Color::from_u32_rgba(0xA3CE27FF),
+    Color::from_u32_rgba(0x1B2632FF),
+    Color::from_u32_rgba(0x005784FF),
+    Color::from_u32_rgba(0x31A2F2FF),
+    Color::from_u32_rgba(0xB2DCEFFF),
+];
+
 struct QuantizationError {
     r: f32,
     g: f32,
@@ -53,7 +73,7 @@ fn map_to_palette<'a>(orig: &Color, palette: &'a [Color]) -> (&'a Color, Quantiz
 }
 
 pub fn dither_image(image: &Image, kernel: &DitheringKernel, palette: &[Color]) -> Image {
-    let mut dithered = vec![Color::from(0xff); image.width * image.height];
+    let mut dithered = vec![Color::BLACK; image.width * image.height];
     dithered.clone_from_slice(image.data.as_ref());
 
     for cy in 0..image.height {
