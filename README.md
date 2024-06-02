@@ -20,5 +20,5 @@ The executable produced by `cargo build` requires two arguments: the **input ima
 Example usage:
 
 ```shell
-target/release/img_dither examples/penguins.jpg dithered.png
+target/release/img_dither --load examples/penguins.jpg --lanczos 832 1152 --dither --save dithered_resized.png
 ```
