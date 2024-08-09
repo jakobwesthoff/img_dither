@@ -42,12 +42,10 @@ pub fn resize_lanczos(image: &Image, new_width: usize, new_height: usize, a: f64
 
                     let weight = lanczos2d(ox - ix as f64, oy - iy as f64, a);
                     sum_weights += weight;
-                    new_r += image.data[iy as usize * image.width as usize + ix as usize].r as f64
-                        * weight;
-                    new_g += image.data[iy as usize * image.width as usize + ix as usize].g as f64
-                        * weight;
-                    new_b += image.data[iy as usize * image.width as usize + ix as usize].b as f64
-                        * weight;
+                    let color = image.data[iy as usize * image.width as usize + ix as usize];
+                    new_r += color.r as f64 * weight;
+                    new_g += color.g as f64 * weight;
+                    new_b += color.b as f64 * weight;
                 }
             }
 
